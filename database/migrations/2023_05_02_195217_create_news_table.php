@@ -16,13 +16,11 @@ class CreateNewsTable extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->id();
             $table->string('title', 225);
-            $table->binary('image');
-            $table->string('link');
-            $table->date('date');
-            $table->string('created_by');
-            $table->string('updated_by');
-            $table->dateTime('created_date');
-            $table->dateTime('updated_date');
+            $table->string('image', 225);
+            $table->string('link', 225);
+            $table->date('date')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }
