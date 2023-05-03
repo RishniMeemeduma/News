@@ -18,7 +18,12 @@ class NewsRepository implements NewsRepositoryInterface
 
     public function getAll()
     {
-       return $this->news->get();
+       return $this->news->orderBy('date', 'DESC')->get();
+    }
+    
+    public function exists()
+    {
+        return $this->news->exists();
     }
 }
 

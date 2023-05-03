@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contract\NewsRepositoryInterface;
 use App\Models\News;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,12 +25,20 @@ class NewsController extends Controller
     public function index()
     {
         // get data from database
-        $news = $this->newsRepo->getAll();
-        if(!$news)
-        {
-            $news = $this->create();
+        try{
+            $data = $this->newsRepo->exists();
+            if(!$data)
+            {
+                $this->create();
+            }
+
+            $news = $this->newsRepo->getAll();
+            return view('news')->with('news', $news);
+            
+
+        }catch(Exception $err){
+            throw $err;
         }
-        return view('news')->with('news', $news);
     }
 
     /**
@@ -42,7 +51,7 @@ class NewsController extends Controller
         $saveData = [];
         // read the json file and store the data inside the table
         $newDetails = json_decode(file_get_contents(Storage::path($this->fileName)),true);
-        // dd($newDetails);
+        
         if($newDetails) 
         {
             foreach($newDetails as $key=>$news) 
@@ -57,11 +66,11 @@ class NewsController extends Controller
                         'link' => isset($news['attachments']) ? $news['attachments'][0]['title_link']: 
                         (isset($news['files']) ? $news['files'][0]['permalink_public'] : ''),
                         'date' => isset($news['attachments']) && isset($news['attachments'][0]['ts']) ? date('Y-m-d',$news['attachments'][0]['ts']):
-                        (isset($news['files']) ? date('Y-m-d',$news['files'][0]['created'])  : ''),
+                        (isset($news['files']) ? date('Y-m-d',$news['files'][0]['created'])  : NULL),
                     ];
                 }
             }
-            $this->newsRepo->create($saveData);
+            return $this->newsRepo->create($saveData);
         }
 
         

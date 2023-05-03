@@ -3,21 +3,32 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+        @if (count($news) > 0)
+            {{-- If news available --}}
+            @foreach ($news as $data )
+                @php 
+                    $image = $data['image'] ? $data['image'] : URL::to('/').'/resources/default.jpg'; 
+                @endphp
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <img class="card-img-top" src="{{ $image }}" alt="Card image cap" onerror="this.src='{{ URL::to('/').'/resources/default.jpg' }}';">
+                        <div class="card-body">
+                        <h5 class="card-title">{{$data['title']}}</h5>
+                        <p class="card-text">{{$data['date']}}.</p>
+                        <a href="{{$data['link']}}" class="btn btn-primary">More details</a>
                         </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
+                    </div>
+                </div>
+            @endforeach
+        @else
+            {{-- If news not available --}}
+            <div class="col-md-12">
+                <div class="card">
+                    <h3>No any news reported yet !!</h3>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 </div>
 @endsection

@@ -4,4 +4,5 @@ interface NewsRepositoryInterface
 {
     public function create($data);
     public function getAll();
+    public function exists();
 }
