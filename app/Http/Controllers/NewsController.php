@@ -14,7 +14,8 @@ class NewsController extends Controller
     private $newsRepo;
     public function __construct(NewsRepositoryInterface $newsRepo)
     {
-        $this->fileName = "2020-01-02.json";
+        $this->fileName = config('app.JsonFile');
+        
         $this->newsRepo = $newsRepo;
     }
     /**
@@ -62,73 +63,19 @@ class NewsController extends Controller
                     $saveData[] = [
                         'title' => isset($news['attachments']) ? $news['attachments'][0]['title'] : 
                         (isset($news['files']) ? $news['files'][0]['title'] : ''),
-                        'image'=> isset($news['attachments']) && isset($news['attachments'][0]['image_url']) ? $news['attachments'][0]['image_url'] :'',
+
+                        'image'=> isset($news['attachments']) && isset($news['attachments'][0]['image_url']) ? 
+                        $news['attachments'][0]['image_url'] :'',
+
                         'link' => isset($news['attachments']) ? $news['attachments'][0]['title_link']: 
                         (isset($news['files']) ? $news['files'][0]['permalink_public'] : ''),
+
                         'date' => isset($news['attachments']) && isset($news['attachments'][0]['ts']) ? date('Y-m-d',$news['attachments'][0]['ts']):
                         (isset($news['files']) ? date('Y-m-d',$news['files'][0]['created'])  : NULL),
                     ];
                 }
             }
             return $this->newsRepo->create($saveData);
-        }
-
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-       
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\News  $news
-     * @return \Illuminate\Http\Response
-     */
-    public function show(News $news)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\News  $news
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(News $news)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\News  $news
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, News $news)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\News  $news
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(News $news)
-    {
-        //
+        }    
     }
 }
