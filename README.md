@@ -5,5 +5,5 @@ JSON_FILE_NAME="2020-01-02.json"
 php artisan serve
 npm run server
 
-#To run unit test
+# To run unit test
 php artisan test --filter NewsTest
