@@ -26,19 +26,22 @@ class NewsController extends Controller
         
         // get data from database
         try{
+            $response = '';
             $data = $this->newsRepo->exists();
+            $file = $filePath != '' ? $filePath : Storage::path(config('app.JsonFile'));
+
             if(!$data)
             {
-                $file = $filePath != '' ? $filePath : Storage::path(config('app.JsonFile'));
                 $response = $this->create($file);
+
             }
 
-            if($response) {
+            if(file_exists($file)) {
                 $news = $this->newsRepo->getAll();
-                return view('news')->with('news', $news);
-            }else {
-                return view('news')->with(['news' => '','error'=> 'File Does not exists']);
-            }
+               return view('news')->with('news', $news);
+           }else {
+               return view('news')->with(['news' => '','error'=> 'File Does not exists']);
+           }
             
 
         }catch(Exception $err){

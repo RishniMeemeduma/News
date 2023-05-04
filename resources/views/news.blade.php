@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        @if (is_array($news) && count($news) > 0)
+        @if ($news && count($news) > 0)
             {{-- If news available --}}
             @foreach ($news as $data )
                 @php 

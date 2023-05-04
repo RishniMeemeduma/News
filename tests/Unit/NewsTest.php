@@ -23,7 +23,6 @@ class NewsTest extends TestCase
      * @return void
      */
     private $news;
-    use RefreshDatabase;
 
     use CreatesApplication;
 
@@ -39,8 +38,6 @@ class NewsTest extends TestCase
 
     public function test_news_controller_getData()
     {
-
-        $this->withoutExceptionHandling();
         // Arrange
         $testJson =json_encode([
             [
@@ -80,6 +77,7 @@ class NewsTest extends TestCase
         $controller = new NewsController($newsRepoInterface);
         // $data = $controller->getData($filePath);
 
+        $user = User::factory()->create();
         $response = $this->withoutMiddleware()->post('/test_news', ['filePath' => $filePath]);
                 
         // Assert
