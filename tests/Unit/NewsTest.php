@@ -94,4 +94,15 @@ class NewsTest extends TestCase
         unlink($filePath);
     }
 
+    public function test_if_the_json_file_is_not_available()
+    {
+        $newsRepoInterface = app(NewsRepositoryInterface::class);
+        $controller = new NewsController($newsRepoInterface);
+
+        $response = $this->withoutMiddleware()->post('/test_news', ['filePath' => 'new_test.json']);
+        $response->assertStatus(200);
+        $response->assertViewIs('news');
+        $response->assertViewHas('error');
+    }
+
 }

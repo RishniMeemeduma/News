@@ -30,14 +30,15 @@ class NewsController extends Controller
             if(!$data)
             {
                 $file = $filePath != '' ? $filePath : Storage::path(config('app.JsonFile'));
-                $this->create($file);
+                $response = $this->create($file);
             }
 
-            $news = $this->newsRepo->getAll();
-            
-            return view('news', [
-                'some_var' => 'some value',
-            ])->with('news', $news);
+            if($response) {
+                $news = $this->newsRepo->getAll();
+                return view('news')->with('news', $news);
+            }else {
+                return view('news')->with(['news' => '','error'=> 'File Does not exists']);
+            }
             
 
         }catch(Exception $err){
@@ -55,31 +56,34 @@ class NewsController extends Controller
         
         $saveData = [];
         // read the json file and store the data inside the table
-        $newDetails = json_decode(file_get_contents($filePath),true);
-
-        if($newDetails) 
+        if(file_exists($filePath))
         {
-            foreach($newDetails as $key=>$news) 
+            $newDetails = json_decode(file_get_contents($filePath),true);
+
+            if($newDetails) 
             {
-                // since response contains either one file or one attachment 
-                if(isset($news['attachments']) || isset($news['files']) ) 
+                foreach($newDetails as $key=>$news) 
                 {
-                    $saveData[] = [
-                        'title' => isset($news['attachments']) ? $news['attachments'][0]['title'] : 
-                        (isset($news['files']) ? $news['files'][0]['title'] : ''),
+                    // since response contains either one file or one attachment 
+                    if(isset($news['attachments']) || isset($news['files']) ) 
+                    {
+                        $saveData[] = [
+                            'title' => isset($news['attachments']) ? $news['attachments'][0]['title'] : 
+                            (isset($news['files']) ? $news['files'][0]['title'] : ''),
 
-                        'image'=> isset($news['attachments']) && isset($news['attachments'][0]['image_url']) ? 
-                        $news['attachments'][0]['image_url'] :'',
+                            'image'=> isset($news['attachments']) && isset($news['attachments'][0]['image_url']) ? 
+                            $news['attachments'][0]['image_url'] :'',
 
-                        'link' => isset($news['attachments']) ? $news['attachments'][0]['title_link']: 
-                        (isset($news['files']) ? $news['files'][0]['permalink_public'] : ''),
+                            'link' => isset($news['attachments']) ? $news['attachments'][0]['title_link']: 
+                            (isset($news['files']) ? $news['files'][0]['permalink_public'] : ''),
 
-                        'date' => isset($news['attachments']) && isset($news['attachments'][0]['ts']) ? date('Y-m-d',$news['attachments'][0]['ts']):
-                        (isset($news['files']) ? date('Y-m-d',$news['files'][0]['created'])  : NULL),
-                    ];
+                            'date' => isset($news['attachments']) && isset($news['attachments'][0]['ts']) ? date('Y-m-d',$news['attachments'][0]['ts']):
+                            (isset($news['files']) ? date('Y-m-d',$news['files'][0]['created'])  : NULL),
+                        ];
+                    }
                 }
-            }
-            return $this->newsRepo->create($saveData);
-        }    
+                return $this->newsRepo->create($saveData);
+            }    
+        }
     }
 }

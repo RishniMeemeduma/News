@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        @if (count($news) > 0)
+        @if (is_array($news) && count($news) > 0)
             {{-- If news available --}}
             @foreach ($news as $data )
                 @php 
@@ -21,6 +21,12 @@
                     </div>
                 </div>
             @endforeach
+        @elseif(!empty($error))
+            <div class="col-md-12">
+                <div class="card">
+                    <h3>{{ $error }}</h3>
+                </div>
+            </div>
         @else
             {{-- If news not available --}}
             <div class="col-md-12">
