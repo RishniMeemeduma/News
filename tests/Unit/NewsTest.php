@@ -80,8 +80,7 @@ class NewsTest extends TestCase
         $controller = new NewsController($newsRepoInterface);
         // $data = $controller->getData($filePath);
 
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->post('/test_news', ['filePath' => $filePath]);
+        $response = $this->withoutMiddleware()->post('/test_news', ['filePath' => $filePath]);
                 
         // Assert
         // check whether the data has added to the database
