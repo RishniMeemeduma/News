@@ -21,5 +21,10 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/dashboard', [App\Http\Controllers\NewsController::class, 'index'])->name('news');
+    Route::get('/dashboard', [App\Http\Controllers\NewsController::class, 'getData'])->name('news');
+
+
+    // unit testing
+    Route::post('/test_news', [App\Http\Controllers\NewsController::class, 'getData']);
+
 });

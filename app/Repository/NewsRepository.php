@@ -23,7 +23,7 @@ class NewsRepository implements NewsRepositoryInterface
     
     public function exists()
     {
-        return $this->news->exists();
+        return $this->news->where('title','not like', '%Test%')->exists();
     }
 }
 

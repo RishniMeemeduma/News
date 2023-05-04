@@ -10,12 +10,9 @@ use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
-    private $fileName;
-    private $newsRepo;
+        private $newsRepo;
     public function __construct(NewsRepositoryInterface $newsRepo)
-    {
-        $this->fileName = config('app.JsonFile');
-        
+    {        
         $this->newsRepo = $newsRepo;
     }
     /**
@@ -23,18 +20,24 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getData(Request $request)
     {
+        $filePath = $request->filePath;
+        
         // get data from database
         try{
             $data = $this->newsRepo->exists();
             if(!$data)
             {
-                $this->create();
+                $file = $filePath != '' ? $filePath : Storage::path(config('app.JsonFile'));
+                $this->create($file);
             }
 
             $news = $this->newsRepo->getAll();
-            return view('news')->with('news', $news);
+            
+            return view('news', [
+                'some_var' => 'some value',
+            ])->with('news', $news);
             
 
         }catch(Exception $err){
@@ -47,12 +50,13 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($filePath)
     {
+        
         $saveData = [];
         // read the json file and store the data inside the table
-        $newDetails = json_decode(file_get_contents(Storage::path($this->fileName)),true);
-        
+        $newDetails = json_decode(file_get_contents($filePath),true);
+
         if($newDetails) 
         {
             foreach($newDetails as $key=>$news) 
