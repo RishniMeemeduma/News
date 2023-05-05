@@ -78,7 +78,7 @@ class NewsController extends Controller
                             $news['attachments'][0]['image_url'] :'',
 
                             'link' => isset($news['attachments']) ? $news['attachments'][0]['title_link']: 
-                            (isset($news['files']) ? $news['files'][0]['permalink_public'] : ''),
+                            (isset($news['files']) ? $news['files'][0]['permalink'] : ''),
 
                             'date' => isset($news['attachments']) && isset($news['attachments'][0]['ts']) ? date('Y-m-d',$news['attachments'][0]['ts']):
                             (isset($news['files']) ? date('Y-m-d',$news['files'][0]['created'])  : NULL),

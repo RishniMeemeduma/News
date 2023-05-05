@@ -38,7 +38,7 @@
                             <img class="card-img-top" src="{{ $image }}" alt="Card image cap" onerror="this.src='{{ URL::to('/').'/resources/default.jpg' }}';">
                         </div>
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{$data['title']}}</h5>
+                            <h5 class="card-title">{{str_replace('&amp;', '&',$data['title'])}}</h5>
                             <p class="card-text">{{$data['date']}}</p>
                             <a href="{{$data['link']}}" class="btn btn-primary mt-auto">More details</a>
                         </div>
