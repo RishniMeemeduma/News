@@ -47,7 +47,7 @@ class NewsTest extends TestCase
                         "created" => 1577961017,
                         "name" => "Test1",
                         "title" => "Test1",
-                        "permalink_public" => "https://slack-files.com/TDYBV1K0R-FS736B40M-35b3b621ca",
+                        "permalink" => "https://slack-files.com/TDYBV1K0R-FS736B40M-35b3b621ca",
                     ]
                 ],
             ],
@@ -69,12 +69,12 @@ class NewsTest extends TestCase
         $filePath = UploadedFile::fake()->createWithContent('test.json', $testJson);
         Storage::disk('local')->put('test.json', $filePath);
         $dataExists = DB::table('news')->exists();
-        $expectedRowCount = !$dataExists?  2 : DB::table('news')->count();
+        $expectedRowCount = !$dataExists?  2 : DB::table('news')->count() +2;
 
         // Act
         // Call controller
-        $newsRepoInterface = app(NewsRepositoryInterface::class);
-        $controller = new NewsController($newsRepoInterface);
+        // $newsRepoInterface = app(NewsRepositoryInterface::class);
+        // $controller = new NewsController($newsRepoInterface);
         // $data = $controller->getData($filePath);
 
         $user = User::factory()->create();
