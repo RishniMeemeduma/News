@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'The Newswire'),
 
     /*
     |--------------------------------------------------------------------------
@@ -27,6 +27,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+    'JsonFile' => env('JSON_FILE_NAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -174,6 +175,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        App\Providers\RepositoryServiceProvider::class,
 
     ],
 

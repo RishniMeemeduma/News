@@ -19,8 +19,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth'])->group(function() {
+    // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/news', [App\Http\Controllers\NewsController::class, 'getData'])->name('news');
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    // unit testing
+    Route::post('/test_news', [App\Http\Controllers\NewsController::class, 'getData']);
+
+});
