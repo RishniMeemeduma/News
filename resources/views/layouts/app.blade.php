@@ -18,6 +18,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        .navbar-brand{
+            color: #bf1a1a !important;
+            font-family: serif;
+            font-size: 23px;
+        }
+       
+    </style>
 </head>
 <body>
     <div id="app">
