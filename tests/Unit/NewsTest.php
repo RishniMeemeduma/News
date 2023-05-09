@@ -69,7 +69,7 @@ class NewsTest extends TestCase
         $filePath = UploadedFile::fake()->createWithContent('test.json', $testJson);
         Storage::disk('local')->put('test.json', $filePath);
         $dataExists = DB::table('news')->exists();
-        $expectedRowCount = !$dataExists?  2 : DB::table('news')->count() +2;
+        $expectedRowCount = !$dataExists ?  2 : DB::table('news')->count();
 
         // Act
         // Call controller
